@@ -2,12 +2,15 @@ package com.example.project_1.di
 
 import com.example.project_1.domain.repository.auth.AuthRepository
 import com.example.project_1.domain.repository.datastore.DataStoreRepository
+import com.example.project_1.domain.repository.plant.PlantRepository
 import com.example.project_1.domain.usecase.auth.LoginUseCase
 import com.example.project_1.domain.usecase.auth.LogoutUseCase
 import com.example.project_1.domain.usecase.auth.RegisterUseCase
 import com.example.project_1.domain.usecase.datastore.ClearSessionDataStoreUseCase
 import com.example.project_1.domain.usecase.datastore.ReadSessionDataStoreUseCase
 import com.example.project_1.domain.usecase.datastore.SaveSessionDataStoreUseCase
+import com.example.project_1.domain.usecase.plant.GetPlantDetailUseCase
+import com.example.project_1.domain.usecase.plant.GetPlantListUseCase
 import com.example.project_1.domain.usecase.validator.EmailValidatorUseCase
 import com.example.project_1.domain.usecase.validator.FieldsValidatorUseCase
 import com.example.project_1.domain.usecase.validator.PasswordMatchingUseCase
@@ -109,4 +112,25 @@ object UseCaseModule {
     ): PasswordMatchingUseCase {
         return PasswordMatchingUseCase()
     }
+
+    @Provides
+    @Singleton
+    fun providePlantListUseCase(
+        plantRepository: PlantRepository
+    ): GetPlantListUseCase {
+        return GetPlantListUseCase(
+            plantRepository = plantRepository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providePlantDetailUseCase(
+        plantRepository: PlantRepository
+    ): GetPlantDetailUseCase {
+        return GetPlantDetailUseCase(
+            plantRepository = plantRepository
+        )
+    }
+
 }

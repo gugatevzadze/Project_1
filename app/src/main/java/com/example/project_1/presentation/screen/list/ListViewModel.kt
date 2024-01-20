@@ -33,9 +33,9 @@ class ListViewModel @Inject constructor(
 
     fun onEvent(event: ListEvent) {
         when (event) {
-            is ListEvent.Logout -> logout()
             is ListEvent.GetPlantList -> getPlantList()
             is ListEvent.PlantItemClick -> onPlantItemClick(event.plant)
+            is ListEvent.PlantSearch -> onPlantSearch(event.query)
         }
     }
 
@@ -77,16 +77,25 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private fun logout() {
+    private fun onPlantSearch(query: String) {
         viewModelScope.launch {
-            logoutUseCase()
-            clearSessionDataStoreUseCase()
-            _listNavigationEvent.emit(ListNavigationEvent.NavigateToWelcome)
+            _listState.update { currentState ->
+                val originalList = currentState.originalPlants ?: currentState.plants.orEmpty()
+                val filteredList = if (query.isEmpty()) {
+                    originalList
+                } else {
+                    originalList.filter { it.name.contains(query, true) }
+                }
+                currentState.copy(
+                    plants = filteredList,
+                    originalPlants = currentState.originalPlants ?: currentState.plants.orEmpty()
+                )
+            }
         }
     }
 
+
     sealed interface ListNavigationEvent {
-        data object NavigateToWelcome : ListNavigationEvent
         data class NavigateToDetail(val plantId: Int) : ListNavigationEvent
     }
 }

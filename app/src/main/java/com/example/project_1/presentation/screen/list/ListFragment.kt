@@ -2,6 +2,7 @@ package com.example.project_1.presentation.screen.list
 
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -27,7 +28,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
     }
 
     override fun onClickListeners() {
-        logoutButtonClicked()
+        searchListener()
     }
 
     override fun bindObservers() {
@@ -82,20 +83,19 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
     private fun handleItemClick(plant: PlantModel) {
         viewModel.onEvent(ListEvent.PlantItemClick(plant = plant))
     }
-    private fun logout() {
-        viewModel.onEvent(ListEvent.Logout)
+
+    private fun handleSearch(query: String) {
+        viewModel.onEvent(ListEvent.PlantSearch(query = query))
     }
 
-    private fun logoutButtonClicked() {
-        binding.btnLogOut.setOnClickListener {
-            logout()
+    private fun searchListener(){
+        binding.etSearch.addTextChangedListener {
+            handleSearch(it.toString())
         }
     }
+
     private fun handleNavigationEvent(event: ListViewModel.ListNavigationEvent) {
         when (event) {
-            is ListViewModel.ListNavigationEvent.NavigateToWelcome -> findNavController().navigate(
-                ListFragmentDirections.actionListFragmentToWelcomeFragment()
-            )
             is ListViewModel.ListNavigationEvent.NavigateToDetail -> findNavController().navigate(
                 ListFragmentDirections.actionListFragmentToDetailFragment(event.plantId)
             )

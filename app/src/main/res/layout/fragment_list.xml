@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context=".presentation.screen.list.ListFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/log_out"
-        />
+        android:hint="@string/search"
+        android:textSize="20sp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

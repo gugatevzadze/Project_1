@@ -48,9 +48,6 @@
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
-            android:id="@+id/action_listFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
-        <action
             android:id="@+id/action_listFragment_to_detailFragment"
             app:destination="@id/detailFragment" >
             <argument
@@ -63,4 +60,23 @@
         android:name="com.example.project_1.presentation.screen.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.project_1.presentation.screen.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.project_1.presentation.screen.favourites.FavouritesFragment"
+        android:label="fragment_favourites"
+        tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.project_1.presentation.screen.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

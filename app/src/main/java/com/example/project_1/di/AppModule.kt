@@ -3,7 +3,7 @@ package com.example.project_1.di
 import com.example.project_1.BuildConfig
 import com.example.project_1.data.common.AuthResponseHandler
 import com.example.project_1.data.common.ResponseHandler
-import com.example.project_1.data.service.plant.PlantApiService
+import com.example.project_1.data.remote.service.plant.PlantApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

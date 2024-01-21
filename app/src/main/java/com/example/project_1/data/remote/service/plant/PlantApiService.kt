@@ -1,6 +1,6 @@
-package com.example.project_1.data.service.plant
+package com.example.project_1.data.remote.service.plant
 
-import com.example.project_1.data.model.plant.PlantDto
+import com.example.project_1.data.remote.model.plant.PlantDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

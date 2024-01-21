@@ -1,12 +1,14 @@
 package com.example.project_1.presentation.screen.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project_1.data.common.Resource
-import com.example.project_1.domain.usecase.auth.LogoutUseCase
-import com.example.project_1.domain.usecase.datastore.ClearSessionDataStoreUseCase
+import com.example.project_1.domain.usecase.database.DeleteFavouritePlantUseCase
+import com.example.project_1.domain.usecase.database.InsertFavouritePlantUseCase
 import com.example.project_1.domain.usecase.plant.GetPlantListUseCase
 import com.example.project_1.presentation.event.list.ListEvent
+import com.example.project_1.presentation.mapper.list.toDomain
 import com.example.project_1.presentation.mapper.list.toPresentation
 import com.example.project_1.presentation.model.list.PlantModel
 import com.example.project_1.presentation.state.list.ListState
@@ -17,12 +19,14 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val getPlantListUseCase: GetPlantListUseCase,
-    private val logoutUseCase: LogoutUseCase,
-    private val clearSessionDataStoreUseCase: ClearSessionDataStoreUseCase
+    private val insertFavouritePlantUseCase: InsertFavouritePlantUseCase,
+    private val deleteFavouritePlantUseCase: DeleteFavouritePlantUseCase
 ) : ViewModel() {
 
     private val _listState = MutableStateFlow(ListState())
@@ -36,6 +40,8 @@ class ListViewModel @Inject constructor(
             is ListEvent.GetPlantList -> getPlantList()
             is ListEvent.PlantItemClick -> onPlantItemClick(event.plant)
             is ListEvent.PlantSearch -> onPlantSearch(event.query)
+            is ListEvent.AddPlantToFavorite -> onAddPlantToFavorite(event.plant)
+            is ListEvent.RemovePlantFromFavorite -> onRemovePlantFromFavorite(event.plant)
         }
     }
 
@@ -93,6 +99,56 @@ class ListViewModel @Inject constructor(
             }
         }
     }
+
+    private fun onAddPlantToFavorite(plant: PlantModel) {
+        viewModelScope.launch {
+            val user = Firebase.auth.currentUser
+            val userId = user?.uid
+            insertFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
+            Log.d("ListViewModel", "Added plant to favorites: ${plant.id}")
+        }
+    }
+    private fun onRemovePlantFromFavorite(plant: PlantModel) {
+        viewModelScope.launch {
+            val user = Firebase.auth.currentUser
+            val userId = user?.uid
+            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
+            Log.d("ListViewModel", "Removed plant to favorites: ${plant.id}")
+        }
+    }
+//private fun onAddPlantToFavorite(plant: PlantModel) {
+//    viewModelScope.launch {
+//        val user = Firebase.auth.currentUser
+//        val userId = user?.uid
+//        if (userId != null) {
+//            insertFavouritePlantUseCase.invoke(userId, plant.toDomain())
+//            _listState.update { currentState ->
+//                currentState.copy(
+//                    plants = currentState.plants?.onEach {
+//                        if (it.id == plant.id) it.isFavorite = true
+//                    }
+//                )
+//            }
+//        }
+//    }
+//}
+//
+//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
+//        viewModelScope.launch {
+//            val user = Firebase.auth.currentUser
+//            val userId = user?.uid
+//            if (userId != null) {
+//                deleteFavouritePlantUseCase.invoke(userId, plant.toDomain())
+//                _listState.update { currentState ->
+//                    currentState.copy(
+//                        plants = currentState.plants?.onEach {
+//                            if (it.id == plant.id) it.isFavorite = false
+//                        }
+//                    )
+//                }
+//            }
+//        }
+//    }
 
 
     sealed interface ListNavigationEvent {

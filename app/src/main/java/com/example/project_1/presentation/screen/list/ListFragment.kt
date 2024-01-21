@@ -27,7 +27,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
         initRecyclerView()
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
         searchListener()
     }
 
@@ -40,10 +40,13 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
         listAdapter = ListRecyclerAdapter (
             onItemClick = {
                 handleItemClick(it)
+            },
+            onItemSelect = {
+                handleUserPlantFavoriteSelection(it)
             }
         )
         binding.rvList.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = listAdapter
         }
@@ -91,6 +94,14 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
     private fun searchListener(){
         binding.etSearch.addTextChangedListener {
             handleSearch(it.toString())
+        }
+    }
+
+    private fun handleUserPlantFavoriteSelection(plant: PlantModel) {
+        if (plant.isFavorite) {
+            viewModel.onEvent(ListEvent.AddPlantToFavorite(plant = plant))
+        } else {
+            viewModel.onEvent(ListEvent.RemovePlantFromFavorite(plant = plant))
         }
     }
 

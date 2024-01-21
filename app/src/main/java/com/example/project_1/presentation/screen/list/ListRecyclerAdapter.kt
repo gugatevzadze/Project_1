@@ -10,7 +10,8 @@ import com.example.project_1.databinding.ListItemPlantBinding
 import com.example.project_1.presentation.model.list.PlantModel
 
 class ListRecyclerAdapter (
-    private val onItemClick: (PlantModel) -> Unit
+    private val onItemClick: (PlantModel) -> Unit,
+    private val onItemSelect: (PlantModel) -> Unit
 ) :
     ListAdapter<PlantModel, ListRecyclerAdapter.UserListViewHolder>(UserListDiffCallback()) {
 
@@ -40,6 +41,10 @@ class ListRecyclerAdapter (
 
             itemView.setOnClickListener {
                 onItemClick.invoke(plant)
+            }
+            binding.checkbox.setOnCheckedChangeListener{ _, isChecked ->
+                plant.isFavorite = isChecked
+                onItemSelect.invoke(plant)
             }
         }
     }

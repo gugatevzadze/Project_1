@@ -57,7 +57,7 @@ class LogInViewModel @Inject constructor(
                         is Resource.Success -> {
                             _logInState.update { currentState -> currentState.copy() }
                             saveSessionDataStoreUseCase(value = rememberMeChecked)
-                            _loginNavigationEvent.emit(LogInNavigationEvent.NavigateToList)
+                            _loginNavigationEvent.emit(LogInNavigationEvent.NavigateToHome)
                         }
 
                         is Resource.Error -> updateErrorMessage(message = it.errorMessage)
@@ -92,6 +92,6 @@ class LogInViewModel @Inject constructor(
     }
 
     sealed interface LogInNavigationEvent {
-        data object NavigateToList : LogInNavigationEvent
+        data object NavigateToHome : LogInNavigationEvent
     }
 }

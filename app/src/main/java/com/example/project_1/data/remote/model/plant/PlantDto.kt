@@ -1,4 +1,4 @@
-package com.example.project_1.data.model.plant
+package com.example.project_1.data.remote.model.plant
 
 import com.squareup.moshi.Json
 

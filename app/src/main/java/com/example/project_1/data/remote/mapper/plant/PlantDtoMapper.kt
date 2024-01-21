@@ -1,6 +1,6 @@
-package com.example.project_1.data.mapper.plant
+package com.example.project_1.data.remote.mapper.plant
 
-import com.example.project_1.data.model.plant.PlantDto
+import com.example.project_1.data.remote.model.plant.PlantDto
 import com.example.project_1.domain.model.plant.Plant
 
 fun PlantDto.toDomain(): Plant {

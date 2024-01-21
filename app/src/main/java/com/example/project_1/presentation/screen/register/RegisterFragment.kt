@@ -2,7 +2,9 @@ package com.example.project_1.presentation.screen.register
 
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +25,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     override fun setUp() {
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
         registerButtonClicked()
     }
 
@@ -54,16 +56,26 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private fun registerButtonClicked() {
         binding.btnRegister.setOnClickListener {
-            register()
+            handleRegister()
+            sendRegisterResult()
         }
     }
 
-    private fun register() {
+    private fun handleRegister() {
         viewModel.onEvent(
             RegisterEvent.Register(
                 email = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
                 confirmPassword = binding.etConfirmPassword.text.toString()
+            )
+        )
+    }
+    private fun sendRegisterResult() {
+        setFragmentResult(
+            "registerResult",
+            bundleOf(
+                "email" to binding.etEmail.text.toString(),
+                "password" to binding.etPassword.text.toString()
             )
         )
     }

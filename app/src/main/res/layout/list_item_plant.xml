@@ -9,6 +9,11 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:scaleType="centerCrop"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favourite"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
@@ -31,5 +36,6 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="14sp" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

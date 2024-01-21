@@ -19,7 +19,7 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>(FragmentWelcomeBind
     override fun setUp() {
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
         handleRegisterBtnClick()
         handleLoginBtnClick()
     }
@@ -59,8 +59,8 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>(FragmentWelcomeBind
             is WelcomeViewModel.WelcomeNavigationEvent.NavigateToRegister -> findNavController().navigate(
                 WelcomeFragmentDirections.actionWelcomeFragmentToRegisterFragment()
             )
-            is WelcomeViewModel.WelcomeNavigationEvent.NavigateToList -> findNavController().navigate(
-                WelcomeFragmentDirections.actionWelcomeFragmentToListFragment()
+            is WelcomeViewModel.WelcomeNavigationEvent.NavigateToHome -> findNavController().navigate(
+                WelcomeFragmentDirections.actionWelcomeFragmentToHomeFragment()
             )
         }
     }

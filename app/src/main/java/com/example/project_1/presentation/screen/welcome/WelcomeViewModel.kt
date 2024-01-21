@@ -1,5 +1,6 @@
 package com.example.project_1.presentation.screen.welcome
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project_1.domain.usecase.datastore.ReadSessionDataStoreUseCase
@@ -31,15 +32,16 @@ class WelcomeViewModel @Inject constructor(private val readSessionDataStoreUseCa
         viewModelScope.launch {
             readSessionDataStoreUseCase().collect { isSessionActive ->
                 if (isSessionActive) {
-                    navigateToList()
+                    navigateToHome()
+                    Log.d("WelcomeViewModel", "readSession: $isSessionActive")
                 }
             }
         }
     }
 
-    private fun navigateToList(){
+    private fun navigateToHome(){
         viewModelScope.launch {
-            _welcomeNavigationEvent.emit(WelcomeNavigationEvent.NavigateToList)
+            _welcomeNavigationEvent.emit(WelcomeNavigationEvent.NavigateToHome)
         }
     }
 
@@ -59,6 +61,6 @@ class WelcomeViewModel @Inject constructor(private val readSessionDataStoreUseCa
     sealed interface WelcomeNavigationEvent{
         data object NavigateToLogin : WelcomeNavigationEvent
         data object NavigateToRegister: WelcomeNavigationEvent
-        data object NavigateToList: WelcomeNavigationEvent
+        data object NavigateToHome: WelcomeNavigationEvent
     }
 }

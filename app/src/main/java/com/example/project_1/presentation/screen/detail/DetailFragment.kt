@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.project_1.databinding.FragmentDetailBinding
 import com.example.project_1.presentation.base.BaseFragment
 import com.example.project_1.presentation.event.detail.DetailEvent
+import com.example.project_1.presentation.model.list.PlantModel
 import com.example.project_1.presentation.state.detail.DetailState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         extractUserId()
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
     }
 
     override fun bindObservers() {
@@ -32,13 +33,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.detailState.collect {
-                    hanleUserDetail(state = it)
+                    handleUserDetail(state = it)
                 }
             }
         }
     }
 
-    private fun hanleUserDetail(state: DetailState) {
+    private fun handleUserDetail(state: DetailState) {
         state.details?.let{
             binding.apply {
                 tvName.text = it.name
@@ -59,6 +60,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
         binding.progressBar.isVisible = state.isLoading
     }
+
     private fun extractUserId() {
         val plantId = arguments?.getInt("plantId") ?: -1
         viewModel.onEvent(DetailEvent.GetPlantDetail(plantId = plantId))

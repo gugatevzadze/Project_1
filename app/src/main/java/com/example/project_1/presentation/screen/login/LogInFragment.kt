@@ -3,6 +3,7 @@ package com.example.project_1.presentation.screen.login
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,8 +24,9 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>(FragmentLogInBinding::i
     override fun setUp() {
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
         loginButtonClicked()
+        retrieveAndSetRegisterResult()
     }
 
     override fun bindObservers() {
@@ -54,11 +56,11 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>(FragmentLogInBinding::i
 
     private fun loginButtonClicked() {
         binding.btnLogIn.setOnClickListener {
-            logIn()
+            handleLogIn()
         }
     }
 
-    private fun logIn() {
+    private fun handleLogIn() {
         if (binding.cbRememberMe.isChecked)
             viewModel.onEvent(
                 LogInEvent.LogInWithRememberMe(
@@ -85,10 +87,17 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>(FragmentLogInBinding::i
         }
     }
 
+    private fun retrieveAndSetRegisterResult(){
+        setFragmentResultListener("registerResult") { _, bundle ->
+            binding.etEmail.setText(bundle.getString("email", ""))
+            binding.etPassword.setText(bundle.getString("password", ""))
+        }
+    }
+
     private fun handleNavigationEvents(event: LogInViewModel.LogInNavigationEvent) {
         when (event) {
-            is LogInViewModel.LogInNavigationEvent.NavigateToList ->
-                findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToListFragment())
+            is LogInViewModel.LogInNavigationEvent.NavigateToHome ->
+                findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomeFragment())
         }
     }
 }

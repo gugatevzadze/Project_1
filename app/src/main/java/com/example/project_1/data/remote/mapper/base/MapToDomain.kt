@@ -1,4 +1,4 @@
-package com.example.project_1.data.mapper.base
+package com.example.project_1.data.remote.mapper.base
 
 import com.example.project_1.data.common.Resource
 import kotlinx.coroutines.flow.Flow

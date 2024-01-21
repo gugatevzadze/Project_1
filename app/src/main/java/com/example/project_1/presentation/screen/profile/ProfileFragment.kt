@@ -1,5 +1,6 @@
 package com.example.project_1.presentation.screen.profile
 
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,12 +15,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun setUp() {
     }
 
-    override fun onClickListeners() {
+    override fun viewActionListeners() {
         logoutButtonClicked()
     }
 
@@ -37,13 +38,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
-    private fun logout() {
+    private fun handleLogout() {
         viewModel.onEvent(ProfileEvent.Logout)
     }
 
     private fun logoutButtonClicked() {
         binding.btnLogOut.setOnClickListener {
-            logout()
+            handleLogout()
         }
     }
 

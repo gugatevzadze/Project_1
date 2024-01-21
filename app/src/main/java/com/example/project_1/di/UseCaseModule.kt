@@ -2,10 +2,14 @@ package com.example.project_1.di
 
 import com.example.project_1.domain.repository.auth.AuthRepository
 import com.example.project_1.domain.repository.datastore.DataStoreRepository
+import com.example.project_1.domain.repository.plant.LocalPlantRepository
 import com.example.project_1.domain.repository.plant.PlantRepository
 import com.example.project_1.domain.usecase.auth.LoginUseCase
 import com.example.project_1.domain.usecase.auth.LogoutUseCase
 import com.example.project_1.domain.usecase.auth.RegisterUseCase
+import com.example.project_1.domain.usecase.database.DeleteFavouritePlantUseCase
+import com.example.project_1.domain.usecase.database.GetFavouritePlantByUserUseCase
+import com.example.project_1.domain.usecase.database.InsertFavouritePlantUseCase
 import com.example.project_1.domain.usecase.datastore.ClearSessionDataStoreUseCase
 import com.example.project_1.domain.usecase.datastore.ReadSessionDataStoreUseCase
 import com.example.project_1.domain.usecase.datastore.SaveSessionDataStoreUseCase
@@ -133,4 +137,33 @@ object UseCaseModule {
         )
     }
 
+    @Singleton
+    @Provides
+    fun provideDeleteFavouritePlantUseCase(
+        localPlantRepository: LocalPlantRepository
+    ): DeleteFavouritePlantUseCase {
+        return DeleteFavouritePlantUseCase(
+            localPlantRepository = localPlantRepository
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetFavouritePlantByUserUseCase(
+        localPlantRepository: LocalPlantRepository
+    ): GetFavouritePlantByUserUseCase {
+        return GetFavouritePlantByUserUseCase(
+            localPlantRepository = localPlantRepository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsertFavouritePlantUseCase(
+        localPlantRepository: LocalPlantRepository
+    ): InsertFavouritePlantUseCase {
+        return InsertFavouritePlantUseCase(
+            localPlantRepository = localPlantRepository
+        )
+    }
 }

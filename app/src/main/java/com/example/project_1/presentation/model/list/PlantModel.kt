@@ -1,5 +1,4 @@
 package com.example.project_1.presentation.model.list
-
 data class PlantModel(
     val id: Int,
     val name: String,
@@ -10,5 +9,6 @@ data class PlantModel(
     val growthHeight: String,
     val bloomingSeason: String,
     val description: String,
-    val image: String
+    val image: String,
+    var isFavorite: Boolean = false
 )

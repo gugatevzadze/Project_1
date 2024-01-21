@@ -18,7 +18,22 @@ fun PlantEntity.toDomain(): Plant {
     )
 }
 
-fun Plant.toData(userId:String): PlantEntity {
+//fun Plant.toData(userId:String): PlantEntity {
+//    return PlantEntity(
+//        id = id,
+//        name = name,
+//        species = species,
+//        family = family,
+//        wateringSchedule = wateringSchedule,
+//        sunlightRequirement = sunlightRequirement,
+//        growthHeight = growthHeight,
+//        bloomingSeason = bloomingSeason,
+//        description = description,
+//        image = image,
+//        userId = userId
+//    )
+//}
+fun Plant.toData(): PlantEntity {
     return PlantEntity(
         id = id,
         name = name,
@@ -29,7 +44,6 @@ fun Plant.toData(userId:String): PlantEntity {
         growthHeight = growthHeight,
         bloomingSeason = bloomingSeason,
         description = description,
-        image = image,
-        userId = userId
+        image = image
     )
 }

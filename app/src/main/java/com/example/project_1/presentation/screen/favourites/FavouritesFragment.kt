@@ -10,6 +10,7 @@ import com.example.project_1.databinding.FragmentFavouritesBinding
 import com.example.project_1.presentation.base.BaseFragment
 import com.example.project_1.presentation.event.favourites.FavouritesEvent
 import com.example.project_1.presentation.model.list.PlantModel
+import com.example.project_1.presentation.model.user.UserModel
 import com.example.project_1.presentation.screen.list.ListRecyclerAdapter
 import com.example.project_1.presentation.state.favourites.FavouritesState
 import kotlinx.coroutines.launch
@@ -44,10 +45,13 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(FragmentFavou
             layoutManager = LinearLayoutManager(requireContext())
             adapter = listAdapter
         }
-        val user = Firebase.auth.currentUser
-        val userId = user!!.uid
-        Log.d("FavouritesFragment", "User id: $userId")
-        viewModel.onEvent(FavouritesEvent.GetFavouritesList(userId = userId))
+        val firebaseUser = Firebase.auth.currentUser
+        val userId = firebaseUser?.uid
+        if (userId != null) {
+            viewModel.onEvent(FavouritesEvent.GetFavouritesList(UserModel(userId)))
+        } else {
+            Log.d("FavouritesFragment", "Failed to get favourite plants: User not logged in")
+        }
     }
 
     private fun observeUserFavourites() {

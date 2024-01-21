@@ -13,7 +13,10 @@ import com.example.project_1.databinding.FragmentListBinding
 import com.example.project_1.presentation.base.BaseFragment
 import com.example.project_1.presentation.event.list.ListEvent
 import com.example.project_1.presentation.model.list.PlantModel
+import com.example.project_1.presentation.model.user.UserModel
 import com.example.project_1.presentation.state.list.ListState
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,7 +40,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
     }
 
     private fun initRecyclerView() {
-        listAdapter = ListRecyclerAdapter (
+        listAdapter = ListRecyclerAdapter(
             onItemClick = {
                 handleItemClick(it)
             },
@@ -91,18 +94,20 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
         viewModel.onEvent(ListEvent.PlantSearch(query = query))
     }
 
-    private fun searchListener(){
+    private fun searchListener() {
         binding.etSearch.addTextChangedListener {
             handleSearch(it.toString())
         }
     }
 
     private fun handleUserPlantFavoriteSelection(plant: PlantModel) {
-        if (plant.isFavorite) {
-            viewModel.onEvent(ListEvent.AddPlantToFavorite(plant = plant))
-        } else {
-            Toast.makeText(requireContext(), "Already Checked", Toast.LENGTH_SHORT).show()
-        }
+        val firebaseUser = Firebase.auth.currentUser
+        val userId = firebaseUser?.uid
+        val user = UserModel(userId!!)
+        viewModel.onEvent(ListEvent.AddPlantToFavorite(plant = plant, user = user))
+        viewModel.onEvent(ListEvent.AddPlantToDatabase(plant = plant))
+        viewModel.onEvent(ListEvent.AddUserToDatabase(user = user))
+
     }
 
     private fun handleNavigationEvent(event: ListViewModel.ListNavigationEvent) {

@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlantDao {
 
-    @Query("SELECT * FROM plantentity WHERE user_id = :userId")
-    fun getFavouritePlantByUser(userId:String): Flow<List<PlantEntity>>
+//    @Query("SELECT * FROM plantentity WHERE user_id = :userId")
+//    fun getFavouritePlantByUser(userId:String): Flow<List<PlantEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavouritePlant(plant: PlantEntity)
+    suspend fun insertPlant(plant: PlantEntity)
 
     @Delete
-    suspend fun deleteFavouritePlant(plant: PlantEntity)
+    suspend fun deletePlant(plant: PlantEntity)
 }

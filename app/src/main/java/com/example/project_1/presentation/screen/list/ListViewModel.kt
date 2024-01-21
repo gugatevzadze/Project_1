@@ -1,16 +1,18 @@
 package com.example.project_1.presentation.screen.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project_1.data.common.Resource
-import com.example.project_1.domain.usecase.database.DeleteFavouritePlantUseCase
 import com.example.project_1.domain.usecase.database.InsertFavouritePlantUseCase
+import com.example.project_1.domain.usecase.database.InsertPlantUseCase
+import com.example.project_1.domain.usecase.database.InsertUserUseCase
 import com.example.project_1.domain.usecase.plant.GetPlantListUseCase
 import com.example.project_1.presentation.event.list.ListEvent
 import com.example.project_1.presentation.mapper.list.toDomain
 import com.example.project_1.presentation.mapper.list.toPresentation
+import com.example.project_1.presentation.mapper.user.toDomain
 import com.example.project_1.presentation.model.list.PlantModel
+import com.example.project_1.presentation.model.user.UserModel
 import com.example.project_1.presentation.state.list.ListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,12 +21,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val getPlantListUseCase: GetPlantListUseCase,
+    private val insertPlantUseCase: InsertPlantUseCase,
+    private val insertUserUseCase: InsertUserUseCase,
     private val insertFavouritePlantUseCase: InsertFavouritePlantUseCase
 ) : ViewModel() {
 
@@ -39,7 +41,9 @@ class ListViewModel @Inject constructor(
             is ListEvent.GetPlantList -> getPlantList()
             is ListEvent.PlantItemClick -> onPlantItemClick(event.plant)
             is ListEvent.PlantSearch -> onPlantSearch(event.query)
-            is ListEvent.AddPlantToFavorite -> onAddPlantToFavorite(event.plant)
+            is ListEvent.AddPlantToFavorite -> addPlantToFavourite(event.user,event.plant)
+            is ListEvent.AddPlantToDatabase -> addPlantToDatabase(event.plant)
+            is ListEvent.AddUserToDatabase -> addUserToDatabase(event.user)
         }
     }
 
@@ -97,87 +101,24 @@ class ListViewModel @Inject constructor(
             }
         }
     }
-    private fun onAddPlantToFavorite(plant: PlantModel) {
+
+    private fun addPlantToDatabase(plant: PlantModel) {
         viewModelScope.launch {
-            val user = Firebase.auth.currentUser
-            val userId = user?.uid
-            insertFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
-            Log.d("ListViewModel", "Added plant to favorites: ${plant.id}")
-            _listState.update { currentState ->
-                currentState.copy(
-                    plants = currentState.plants?.map {
-                        if (it.id == plant.id) it.copy(isFavorite = true) else it
-                    }
-                )
-            }
+            insertPlantUseCase(plant.toDomain())
         }
     }
 
-//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
-//        viewModelScope.launch {
-//            val user = Firebase.auth.currentUser
-//            val userId = user?.uid
-//            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
-//            Log.d("ListViewModel", "Removed plant from favorites: ${plant.id}")
-//            _listState.update { currentState ->
-//                currentState.copy(
-//                    plants = currentState.plants?.map {
-//                        if (it.id == plant.id) it.copy(isFavorite = false) else it
-//                    }
-//                )
-//            }
-//        }
-//    }
+    private fun addUserToDatabase(user: UserModel) {
+        viewModelScope.launch {
+            insertUserUseCase(user.toDomain())
+        }
+    }
 
-//    private fun onAddPlantToFavorite(plant: PlantModel) {
-//        viewModelScope.launch {
-//            val user = Firebase.auth.currentUser
-//            val userId = user?.uid
-//            insertFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
-//            Log.d("ListViewModel", "Added plant to favorites: ${plant.id}")
-//        }
-//    }
-//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
-//        viewModelScope.launch {
-//            val user = Firebase.auth.currentUser
-//            val userId = user?.uid
-//            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
-//            Log.d("ListViewModel", "Removed plant to favorites: ${plant.id}")
-//        }
-//    }
-//private fun onAddPlantToFavorite(plant: PlantModel) {
-//    viewModelScope.launch {
-//        val user = Firebase.auth.currentUser
-//        val userId = user?.uid
-//        if (userId != null) {
-//            insertFavouritePlantUseCase.invoke(userId, plant.toDomain())
-//            _listState.update { currentState ->
-//                currentState.copy(
-//                    plants = currentState.plants?.onEach {
-//                        if (it.id == plant.id) it.isFavorite = true
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
-//
-//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
-//        viewModelScope.launch {
-//            val user = Firebase.auth.currentUser
-//            val userId = user?.uid
-//            if (userId != null) {
-//                deleteFavouritePlantUseCase.invoke(userId, plant.toDomain())
-//                _listState.update { currentState ->
-//                    currentState.copy(
-//                        plants = currentState.plants?.onEach {
-//                            if (it.id == plant.id) it.isFavorite = false
-//                        }
-//                    )
-//                }
-//            }
-//        }
-//    }
+    private fun addPlantToFavourite(user: UserModel, plant: PlantModel) {
+        viewModelScope.launch {
+            insertFavouritePlantUseCase(user.toDomain(), plant.toDomain())
+        }
+    }
 
 
     sealed interface ListNavigationEvent {

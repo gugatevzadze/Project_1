@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.example.project_1.data.common.AuthResponseHandler
 import com.example.project_1.data.common.ResponseHandler
 import com.example.project_1.data.local.dao.plant.PlantDao
+import com.example.project_1.data.local.dao.user.UserDao
 import com.example.project_1.data.repository.auth.AuthRepositoryImpl
 import com.example.project_1.data.repository.datastore.DataStoreRepositoryImpl
 import com.example.project_1.data.repository.plant.RemotePlantRepositoryImpl
@@ -55,8 +56,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideLocalPlantRepository(
-        plantDao: PlantDao
+        plantDao: PlantDao,
+        userDao: UserDao
     ): LocalPlantRepository {
-        return LocalPlantRepositoryImpl(plantDao = plantDao)
+        return LocalPlantRepositoryImpl(plantDao = plantDao, userDao = userDao)
     }
 }

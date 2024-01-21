@@ -101,7 +101,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::infl
         if (plant.isFavorite) {
             viewModel.onEvent(ListEvent.AddPlantToFavorite(plant = plant))
         } else {
-            viewModel.onEvent(ListEvent.RemovePlantFromFavorite(plant = plant))
+            Toast.makeText(requireContext(), "Already Checked", Toast.LENGTH_SHORT).show()
         }
     }
 

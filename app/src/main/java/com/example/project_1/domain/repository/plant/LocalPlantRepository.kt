@@ -10,4 +10,7 @@ interface LocalPlantRepository {
     suspend fun insertFavouritePlant(userId: String,plant: Plant)
 
     suspend fun deleteFavouritePlant(userId: String,plant: Plant)
+
+    ///userdao
+
 }

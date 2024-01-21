@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_1.databinding.FragmentFavouritesBinding
 import com.example.project_1.presentation.base.BaseFragment
 import com.example.project_1.presentation.event.favourites.FavouritesEvent
+import com.example.project_1.presentation.model.list.PlantModel
 import com.example.project_1.presentation.screen.list.ListRecyclerAdapter
 import com.example.project_1.presentation.state.favourites.FavouritesState
 import kotlinx.coroutines.launch
@@ -34,7 +35,11 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(FragmentFavou
     }
 
     private fun initRecyclerView() {
-        listAdapter = FavouritesRecyclerAdapter()
+        listAdapter = FavouritesRecyclerAdapter(
+            onItemClick = {
+                handleButtonClick(it)
+            }
+        )
         binding.rvList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = listAdapter
@@ -53,6 +58,9 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(FragmentFavou
                 }
             }
         }
+    }
+    private fun handleButtonClick(plant: PlantModel) {
+        viewModel.onEvent(FavouritesEvent.RemovePlantFromFavourite(plant = plant))
     }
     private fun handleFavouriteList(state: FavouritesState) {
         state.favourites?.let {

@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.project_1.databinding.ListItemFavouritesBinding
 import com.example.project_1.presentation.model.list.PlantModel
 
-class FavouritesRecyclerAdapter : ListAdapter<PlantModel, FavouritesRecyclerAdapter.FavouritesViewHolder>(FavouritesDiffCallback()) {
+class FavouritesRecyclerAdapter(
+    private val onItemClick: (PlantModel) -> Unit
+) : ListAdapter<PlantModel, FavouritesRecyclerAdapter.FavouritesViewHolder>(FavouritesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritesViewHolder {
         val binding =
@@ -40,6 +42,9 @@ class FavouritesRecyclerAdapter : ListAdapter<PlantModel, FavouritesRecyclerAdap
                 Glide.with(ivImage.context)
                     .load(plant.image)
                     .into(ivImage)
+            }
+            binding.btnRemoveFavourites.setOnClickListener {
+                onItemClick.invoke(plant)
             }
         }
     }

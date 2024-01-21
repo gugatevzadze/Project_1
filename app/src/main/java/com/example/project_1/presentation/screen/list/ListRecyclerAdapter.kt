@@ -42,8 +42,8 @@ class ListRecyclerAdapter (
             itemView.setOnClickListener {
                 onItemClick.invoke(plant)
             }
-            binding.checkbox.setOnCheckedChangeListener{ _, isChecked ->
-                plant.isFavorite = isChecked
+            binding.btnAddToFavourites.setOnClickListener {
+                plant.isFavorite = !plant.isFavorite
                 onItemSelect.invoke(plant)
             }
         }

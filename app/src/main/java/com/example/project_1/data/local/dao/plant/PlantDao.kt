@@ -16,12 +16,8 @@ interface PlantDao {
     fun getFavouritePlantByUser(userId:String): Flow<List<PlantEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavouritePlant(plant: PlantEntity){
-        Log.d("PlantDao", "Inserting plant: ${plant.id} into database for user: ${plant.userId}")
-    }
+    suspend fun insertFavouritePlant(plant: PlantEntity)
 
     @Delete
-    suspend fun deleteFavouritePlant(plant: PlantEntity){
-        Log.d("PlantDao", "Deleting plant: ${plant.id} from database for user: ${plant.userId}")
-    }
+    suspend fun deleteFavouritePlant(plant: PlantEntity)
 }

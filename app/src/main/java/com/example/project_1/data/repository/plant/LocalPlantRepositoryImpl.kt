@@ -2,6 +2,7 @@ package com.example.project_1.data.repository.plant
 
 import android.util.Log
 import com.example.project_1.data.local.dao.plant.PlantDao
+import com.example.project_1.data.local.dao.user.UserDao
 import com.example.project_1.data.local.mapper.plant.toData
 import com.example.project_1.data.local.mapper.plant.toDomain
 import com.example.project_1.domain.model.plant.Plant
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LocalPlantRepositoryImpl @Inject constructor(
-    private val plantDao: PlantDao
+    private val plantDao: PlantDao,
+//    private val userDao: UserDao
 ) : LocalPlantRepository {
 
     override suspend fun getFavouritePlantByUser(userId:String): Flow<List<Plant>> {
@@ -26,7 +28,10 @@ class LocalPlantRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteFavouritePlant(userId: String, plant: Plant) {
-        Log.d("LocalPlantRepoImpl", "Inserting plant: ${plant.id} into database for user: $userId")
+        Log.d("LocalPlantRepoImpl", "deleting: ${plant.id} from database for user: $userId")
         return plantDao.deleteFavouritePlant(plant.toData(userId))
     }
+
+    ///userdao
+
 }

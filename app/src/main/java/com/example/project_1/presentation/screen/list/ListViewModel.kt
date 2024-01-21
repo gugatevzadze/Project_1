@@ -25,8 +25,7 @@ import com.google.firebase.ktx.Firebase
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val getPlantListUseCase: GetPlantListUseCase,
-    private val insertFavouritePlantUseCase: InsertFavouritePlantUseCase,
-    private val deleteFavouritePlantUseCase: DeleteFavouritePlantUseCase
+    private val insertFavouritePlantUseCase: InsertFavouritePlantUseCase
 ) : ViewModel() {
 
     private val _listState = MutableStateFlow(ListState())
@@ -41,7 +40,6 @@ class ListViewModel @Inject constructor(
             is ListEvent.PlantItemClick -> onPlantItemClick(event.plant)
             is ListEvent.PlantSearch -> onPlantSearch(event.query)
             is ListEvent.AddPlantToFavorite -> onAddPlantToFavorite(event.plant)
-            is ListEvent.RemovePlantFromFavorite -> onRemovePlantFromFavorite(event.plant)
         }
     }
 
@@ -99,23 +97,54 @@ class ListViewModel @Inject constructor(
             }
         }
     }
-
     private fun onAddPlantToFavorite(plant: PlantModel) {
         viewModelScope.launch {
             val user = Firebase.auth.currentUser
             val userId = user?.uid
             insertFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
             Log.d("ListViewModel", "Added plant to favorites: ${plant.id}")
+            _listState.update { currentState ->
+                currentState.copy(
+                    plants = currentState.plants?.map {
+                        if (it.id == plant.id) it.copy(isFavorite = true) else it
+                    }
+                )
+            }
         }
     }
-    private fun onRemovePlantFromFavorite(plant: PlantModel) {
-        viewModelScope.launch {
-            val user = Firebase.auth.currentUser
-            val userId = user?.uid
-            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
-            Log.d("ListViewModel", "Removed plant to favorites: ${plant.id}")
-        }
-    }
+
+//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
+//        viewModelScope.launch {
+//            val user = Firebase.auth.currentUser
+//            val userId = user?.uid
+//            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
+//            Log.d("ListViewModel", "Removed plant from favorites: ${plant.id}")
+//            _listState.update { currentState ->
+//                currentState.copy(
+//                    plants = currentState.plants?.map {
+//                        if (it.id == plant.id) it.copy(isFavorite = false) else it
+//                    }
+//                )
+//            }
+//        }
+//    }
+
+//    private fun onAddPlantToFavorite(plant: PlantModel) {
+//        viewModelScope.launch {
+//            val user = Firebase.auth.currentUser
+//            val userId = user?.uid
+//            insertFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
+//            Log.d("ListViewModel", "Added plant to favorites: ${plant.id}")
+//        }
+//    }
+//    private fun onRemovePlantFromFavorite(plant: PlantModel) {
+//        viewModelScope.launch {
+//            val user = Firebase.auth.currentUser
+//            val userId = user?.uid
+//            deleteFavouritePlantUseCase.invoke(userId.toString(),plant.toDomain())
+//            Log.d("ListViewModel", "Removed plant to favorites: ${plant.id}")
+//        }
+//    }
 //private fun onAddPlantToFavorite(plant: PlantModel) {
 //    viewModelScope.launch {
 //        val user = Firebase.auth.currentUser

@@ -99,8 +99,6 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
-    //paging 3
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     //glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
     //splash screen api

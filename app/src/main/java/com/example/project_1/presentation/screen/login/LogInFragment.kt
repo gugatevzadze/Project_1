@@ -27,11 +27,13 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>(FragmentLogInBinding::i
     override fun viewActionListeners() {
         loginButtonClicked()
         retrieveAndSetRegisterResult()
+
     }
 
     override fun bindObservers() {
         observeLoginState()
         observeNavigationEvents()
+        passwordResetClicked()
     }
 
     private fun observeLoginState() {
@@ -87,17 +89,28 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>(FragmentLogInBinding::i
         }
     }
 
-    private fun retrieveAndSetRegisterResult(){
+    private fun retrieveAndSetRegisterResult() {
         setFragmentResultListener("registerResult") { _, bundle ->
             binding.etEmail.setText(bundle.getString("email", ""))
             binding.etPassword.setText(bundle.getString("password", ""))
         }
     }
 
+    private fun passwordResetClicked() {
+        binding.btnForgot.setOnClickListener {
+            viewModel.onEvent(LogInEvent.PasswordResetClicked)
+        }
+    }
+
+
     private fun handleNavigationEvents(event: LogInViewModel.LogInNavigationEvent) {
         when (event) {
             is LogInViewModel.LogInNavigationEvent.NavigateToHome ->
                 findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToHomeFragment())
+
+            is LogInViewModel.LogInNavigationEvent.NavigateToPasswordReset -> findNavController().navigate(
+                LogInFragmentDirections.actionLogInFragmentToForgotPasswordFragment()
+            )
         }
     }
 }

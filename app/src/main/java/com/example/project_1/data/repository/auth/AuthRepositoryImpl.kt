@@ -33,4 +33,10 @@ class AuthRepositoryImpl @Inject constructor(
             firebaseAuth.signOut()
         }
     }
+
+    override suspend fun passwordReset(email: String): Flow<Resource<Unit>> {
+        return authResponseHandler.safeAuthenticationCall {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+        }
+    }
 }

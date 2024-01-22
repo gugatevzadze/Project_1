@@ -7,6 +7,7 @@ import com.example.project_1.domain.repository.plant.RemotePlantRepository
 import com.example.project_1.domain.usecase.auth.LoginUseCase
 import com.example.project_1.domain.usecase.auth.LogoutUseCase
 import com.example.project_1.domain.usecase.auth.RegisterUseCase
+import com.example.project_1.domain.usecase.auth.ResetPasswordUseCase
 import com.example.project_1.domain.usecase.database.DeleteFavouritePlantUseCase
 import com.example.project_1.domain.usecase.database.GetFavouritePlantsForUserUseCase
 import com.example.project_1.domain.usecase.database.InsertFavouritePlantUseCase
@@ -186,6 +187,16 @@ object UseCaseModule {
     ): InsertUserUseCase {
         return InsertUserUseCase(
             localPlantRepository = localPlantRepository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideResetPasswordUseCase(
+        authRepository: AuthRepository
+    ): ResetPasswordUseCase {
+        return ResetPasswordUseCase(
+            authRepository = authRepository
         )
     }
 }

@@ -39,6 +39,7 @@ class LogInViewModel @Inject constructor(
             is LogInEvent.LogIn -> logIn(email = event.email, password = event.password, rememberMeChecked = false)
             is LogInEvent.LogInWithRememberMe -> logIn(email = event.email, password = event.password, rememberMeChecked = true)
             is LogInEvent.ResetErrorMessage -> updateErrorMessage(message = null)
+            is LogInEvent.PasswordResetClicked -> navigateToPasswordReset()
         }
     }
 
@@ -91,7 +92,14 @@ class LogInViewModel @Inject constructor(
         _logInState.update { currentState -> currentState.copy(errorMessage = message) }
     }
 
+    private fun navigateToPasswordReset() {
+        viewModelScope.launch {
+            _loginNavigationEvent.emit(LogInNavigationEvent.NavigateToPasswordReset)
+        }
+    }
+
     sealed interface LogInNavigationEvent {
         data object NavigateToHome : LogInNavigationEvent
+        data object NavigateToPasswordReset : LogInNavigationEvent
     }
 }

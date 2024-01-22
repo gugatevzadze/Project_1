@@ -1,6 +1,7 @@
 package com.example.project_1.presentation.screen.favourites
 
 import android.util.Log
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +30,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(FragmentFavou
     }
 
     override fun viewActionListeners() {
+        searchListener()
     }
 
     override fun bindObservers() {
@@ -63,6 +65,16 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(FragmentFavou
             }
         }
     }
+    private fun handleSearch(query: String) {
+        viewModel.onEvent(FavouritesEvent.FavouritePlantSearch(query = query))
+    }
+
+    private fun searchListener() {
+        binding.etSearch.addTextChangedListener {
+            handleSearch(it.toString())
+        }
+    }
+
     private fun handleButtonClick(plant: PlantModel) {
         viewModel.onEvent(FavouritesEvent.RemovePlantFromFavourite(plant = plant))
     }

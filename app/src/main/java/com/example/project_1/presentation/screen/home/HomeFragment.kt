@@ -1,14 +1,7 @@
 package com.example.project_1.presentation.screen.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -28,6 +21,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun viewActionListeners() {
         onListButtonClicked()
+        handleLogoutButtonClicked()
     }
 
     override fun bindObservers() {
@@ -51,12 +45,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleListButtonClicked() {
-        viewModel.onEvent(HomeEvent.onListButtonClicked)
+        viewModel.onEvent(HomeEvent.OnListButtonClicked)
+    }
+
+    private fun handleLogout() {
+        viewModel.onEvent(HomeEvent.Logout)
+    }
+
+    private fun handleLogoutButtonClicked() {
+        binding.btnLogOut.setOnClickListener {
+            handleLogout()
+        }
     }
 
     private fun handleNavigationEvent(event: HomeViewModel.HomeNavigationEvent) {
         when (event) {
             is HomeViewModel.HomeNavigationEvent.NavigateToList -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToListFragment())
+            is HomeViewModel.HomeNavigationEvent.NavigateToWelcome -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToWelcomeFragment())
         }
     }
 }

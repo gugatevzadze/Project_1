@@ -37,11 +37,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.profileFragment, R.id.homeFragment, R.id.favouritesFragment -> {
-                    navView.visibility = View.VISIBLE
+                R.id.welcomeFragment, R.id.logInFragment, R.id.registerFragment -> {
+                    navView.visibility = View.GONE
                 }
                 else -> {
-                    navView.visibility = View.GONE
+                    navView.visibility = View.VISIBLE
                 }
             }
         }

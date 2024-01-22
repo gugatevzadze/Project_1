@@ -4,11 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
+    android:background="@color/primary_background"
     android:orientation="vertical"
     tools:context=".presentation.screen.favourites.FavouritesFragment">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etSearch"
+        android:background="@drawable/search"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/urbanist"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search"

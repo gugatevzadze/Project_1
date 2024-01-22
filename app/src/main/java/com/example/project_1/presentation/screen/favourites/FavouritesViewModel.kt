@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +35,7 @@ class FavouritesViewModel @Inject constructor(
         when (event) {
             is FavouritesEvent.GetFavouritesList -> getFavouritePlants(event.user)
             is FavouritesEvent.RemovePlantFromFavourite -> onRemovePlantFromFavorite(event.plant)
+            is FavouritesEvent.FavouritePlantSearch -> onFavouritePlantSearch(event.query)
         }
     }
     private fun getFavouritePlants(user: UserModel) {
@@ -60,6 +62,22 @@ class FavouritesViewModel @Inject constructor(
                 getFavouritePlants(UserModel(userId))
             } else {
                 Log.d("FavouritesViewModel", "Failed to remove plant from favorites: User not logged in")
+            }
+        }
+    }
+    private fun onFavouritePlantSearch(query: String) {
+        viewModelScope.launch {
+            _favouritePlant.update { currentState ->
+                val originalList = currentState.originalFavourites ?: currentState.favourites.orEmpty()
+                val filteredList = if (query.isEmpty()) {
+                    originalList
+                } else {
+                    originalList.filter { it.name.contains(query, true) }
+                }
+                currentState.copy(
+                    favourites = filteredList,
+                    originalFavourites = currentState.originalFavourites ?: currentState.favourites.orEmpty()
+                )
             }
         }
     }

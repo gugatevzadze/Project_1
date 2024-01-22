@@ -10,8 +10,10 @@ import com.example.project_1.data.repository.auth.AuthRepositoryImpl
 import com.example.project_1.data.repository.datastore.DataStoreRepositoryImpl
 import com.example.project_1.data.repository.plant.RemoteRemotePlantRepositoryImpl
 import com.example.project_1.data.remote.service.plant.PlantApiService
+import com.example.project_1.data.repository.auth.AuthUserRepositoryImpl
 import com.example.project_1.data.repository.plant.LocalPlantRepositoryImpl
 import com.example.project_1.domain.repository.auth.AuthRepository
+import com.example.project_1.domain.repository.auth.AuthUserRepository
 import com.example.project_1.domain.repository.datastore.DataStoreRepository
 import com.example.project_1.domain.repository.plant.LocalPlantRepository
 import com.example.project_1.domain.repository.plant.RemotePlantRepository
@@ -60,5 +62,13 @@ object RepositoryModule {
         userDao: UserDao
     ): LocalPlantRepository {
         return LocalPlantRepositoryImpl(plantDao = plantDao, userDao = userDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthUserRepository(
+        firebaseAuth: FirebaseAuth
+    ): AuthUserRepository {
+        return AuthUserRepositoryImpl(firebaseAuth = firebaseAuth)
     }
 }

@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     android:padding="30dp"
     android:orientation="vertical"
+    android:background="@color/primary_background"
     tools:context=".presentation.screen.list.ListFragment">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etSearch"
+        android:background="@drawable/search"
+        android:padding="15dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/urbanist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search"

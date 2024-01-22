@@ -1,6 +1,8 @@
 Project Botany  Documentation
+
 Purpose of the Application:
-The Botany Companion App is designed with the primary goal of simplifying the journey for entry-level botany enthusiasts. The application aims to streamline functionality by integrating only essential information to help users kickstart their exploration into the world of botany.
+
+The Botany App is designed with the primary goal of simplifying the journey for entry-level botany enthusiasts. The application aims to streamline functionality by integrating only essential information to help users kickstart their exploration into the world of botany.
 
 How to Use the Application:
 

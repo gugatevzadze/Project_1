@@ -10,37 +10,37 @@
 The Botany App is designed with the primary goal of simplifying the journey for entry-level botany enthusiasts. The application aims to streamline functionality by integrating only essential information to help users kickstart their exploration into the world of botany, the app architecture is simple and easily usable, having the pages of plants, their details and favourites.
 
 ## Tech Stack
--Navigation Graph (NavGraph):
+- Navigation Graph (NavGraph):
 Utilized for defining and managing the navigation flow within the application.
 
--Moshi:
+- Moshi:
 Used for JSON parsing, facilitating efficient data conversion.
 
--Retrofit:
+- Retrofit:
 Employed for making network requests and handling API interactions.
 
--DataStore:
+- DataStore:
 Utilized for data storage, providing a modern alternative to SharedPreferences.
 
--Dagger Hilt:
+- Dagger Hilt:
 Implemented for dependency injection, enhancing the app's maintainability and scalability.
 
--Glide:
+- Glide:
 Integrated for efficient image loading and caching.
 
--Splash Screen API:
+- Splash Screen API:
 Implemented to enhance user experience during the application launch.
 
--OkHttp Logging Interceptor:
+- OkHttp Logging Interceptor:
 Used for logging HTTP interactions, aiding in debugging and performance monitoring.
 
--Firebase Authentication:
+- Firebase Authentication:
 For secure user authentication.
 
--Room Database:
+- Room Database:
 Utilized for storing and managing user-favorite plant items locally.
 
--MVI Architecture
+- MVI Architecture
 Event based architecture
 
 
@@ -48,7 +48,7 @@ Event based architecture
 - Mock API for plants list - https://65a7056e94c2c5762da627f6.mockapi.io/api/v1/plants
 - Mock API for plants details - https://px5gxu4cxi.api.quickmocker.com/1
 
--Note: I couldn't find suitable APIs for the project and had to improvise, i used Mockapi.io and quickmocker.com
+- Note: I couldn't find suitable APIs for the project and had to improvise, i used Mockapi.io and quickmocker.com
 
 ## Pages
 
